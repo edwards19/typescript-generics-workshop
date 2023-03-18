@@ -1,15 +1,19 @@
 import { expect, it } from "vitest";
 import { Equal, Expect } from "../helpers/type-utils";
 
-export class Component {
-  private props: unknown;
+export class Component<T> {
+  private props: T;
 
-  constructor(props: unknown) {
+  constructor(props: T) {
     this.props = props;
   }
 
   getProps = () => this.props;
 }
+
+// Component<T> infers the types for the constructor(props: T);
+
+// private props: T infers the types for the this.props used in the getProps instance method;
 
 it("Should create an object containing props", () => {
   const component = new Component({ a: 1, b: 2, c: 3 });
