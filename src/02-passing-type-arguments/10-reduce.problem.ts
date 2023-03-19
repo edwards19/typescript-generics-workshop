@@ -10,7 +10,7 @@ const array = [
   },
 ];
 
-const obj = array.reduce((accum, item) => {
+const obj = array.reduce((accum: Record<string, { name: string }>, item) => {
   accum[item.name] = item;
   return accum;
 }, {});
