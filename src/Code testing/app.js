@@ -43,10 +43,10 @@ function add(a) {
 ////////////////////////////////
 
 const createClassNamesFactory = (classes) => {
-  console.log(classes)
+  // console.log(classes)
   return (type, ...otherClasses) => {
-    console.log(type);
-    console.log(otherClasses);
+    // console.log(type);
+    // console.log(otherClasses);
     const classList = [classes[type], ...otherClasses];
     return classList.join(" ");
   };};
@@ -60,3 +60,32 @@ const result = getBg('primary');
 
 // console.log(result);
 
+//////////////////////////////////
+
+const createCache = (initialCache) => {
+  const cache = initialCache || {};
+
+  return {
+    get: (key) => cache[key],
+    set: (key, value) => {
+      cache[key] = value;
+    },
+    clone: (transform) => {
+      const newCache = {};
+
+      for (const key in cache) {
+        newCache[key] = transform(cache[key]);
+      }
+      return createCache(newCache);
+    },
+  };
+};
+
+
+const cache = createCache();
+
+cache.set("a", 1);
+cache.set("b", 2);
+const stringCache = cache.clone((el) => String(el));
+
+console.log(typeof stringCache.get('a'));

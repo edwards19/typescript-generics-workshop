@@ -1,13 +1,16 @@
 import { Equal, Expect } from "../helpers/type-utils";
 
 export const makeSelectors = <
-  TSource,
-  TSelectors extends Record<string, (source: TSource) => any> = {},
->(
-  selectors: TSelectors,
-) => {
-  return selectors;
+  TSource = "makeSelectors expects to be passed a type argument"
+>() => {
+  return <TSelectors extends Record<string, (source: TSource) => any>>(
+    selectors: TSelectors
+  ) => {
+    return selectors;
+  };
 };
+
+// TSource above is the Source interface below since we don't have anything to infer from when we call makeSelectors we just provide the type generic parameter Source
 
 interface Source {
   firstName: string;
@@ -27,12 +30,14 @@ interface Source {
  *
  * makeSelectors<Source>()({ ...selectorsGoHere })
  */
-const selectors = makeSelectors<Source>({
+const firstFunc = makeSelectors<Source>();
+
+const selectors = firstFunc({
   getFullName: (source) =>
     `${source.firstName} ${source.middleName} ${source.lastName}`,
   getFirstAndLastName: (source) => `${source.firstName} ${source.lastName}`,
   getFirstNameLength: (source) => source.firstName.length,
-});
+}); 
 
 type tests = [
   Expect<Equal<typeof selectors["getFullName"], (source: Source) => string>>,
@@ -41,5 +46,5 @@ type tests = [
   >,
   Expect<
     Equal<typeof selectors["getFirstNameLength"], (source: Source) => number>
-  >,
+  >
 ];
