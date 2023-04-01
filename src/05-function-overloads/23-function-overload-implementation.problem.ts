@@ -13,9 +13,12 @@ interface AdminPrivileges extends UserPrivileges {
   sitesCanDelete: string[];
 }
 
+// the implementation function is not exposed outside. we can use this function overload technique to get auto complete of the string literals, but we can also pass in other things. i.e. we expect cheese but we can also pass in meat
+
 function getRolePrivileges(role: "admin"): AdminPrivileges;
 function getRolePrivileges(role: "user"): UserPrivileges;
-function getRolePrivileges(role: string): AnonymousPrivileges {
+function getRolePrivileges(role: string): AnonymousPrivileges;
+function getRolePrivileges(role: string): AdminPrivileges | UserPrivileges | AnonymousPrivileges {
   switch (role) {
     case "admin":
       return {
